@@ -12,9 +12,18 @@ import { shoes } from '@/data/shoes';
 import { Shoe } from '@/data/shoes';
 import { ChevronDown, Filter, SlidersHorizontal, X } from 'lucide-react';
 
-const CategoryPage = () => {
-  const { category } = useParams<{ category?: string }>();
+interface CategoryPageProps {
+  params?: {
+    category: string;
+  };
+}
+
+const CategoryPage: React.FC<CategoryPageProps> = ({ params: propParams }) => {
+  const urlParams = useParams<{ category?: string }>();
   const location = useLocation();
+  
+  // Use category from props if provided, otherwise from URL params
+  const category = propParams?.category || urlParams.category;
   
   const [filteredShoes, setFilteredShoes] = useState<Shoe[]>([]);
   const [sortOption, setSortOption] = useState('featured');
