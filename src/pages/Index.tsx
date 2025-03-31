@@ -18,32 +18,43 @@ const Index = () => {
       <Navbar />
       
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="relative h-[80vh] min-h-[500px] bg-neutral-900 overflow-hidden">
-          <div className="absolute inset-0 z-0">
+        {/* Updated Hero Section */}
+        <section className="relative h-[80vh] min-h-[600px] bg-gradient-to-r from-neutral-900 to-brand-dark overflow-hidden">
+          <div className="absolute inset-0 z-0 opacity-40 mix-blend-overlay">
             <img 
-              src="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80" 
+              src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80" 
               alt="Hero background" 
-              className="w-full h-full object-cover object-center opacity-60"
+              className="w-full h-full object-cover object-center"
             />
           </div>
           
-          <div className="container-custom h-full flex flex-col justify-center relative z-10">
-            <div className="max-w-2xl animate-fade-in">
-              <h1 className="text-white text-5xl md:text-6xl font-bold mb-4">
-                Step Into Your Style
+          <div className="container-custom h-full flex flex-col md:flex-row items-center justify-between relative z-10 gap-8">
+            <div className="max-w-xl animate-fade-in pt-16 md:pt-0">
+              <h1 className="text-white text-5xl md:text-6xl font-bold mb-4 leading-tight">
+                Find Your Perfect <span className="text-brand-light">Fit</span>
               </h1>
               <p className="text-neutral-200 text-xl mb-8">
-                Discover the perfect pair of shoes for every occasion. From casual comfort to elegant statements, we've got you covered.
+                Discover premium footwear for every occasion and elevate your style with our exclusive collections.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button asChild size="lg" className="bg-brand hover:bg-brand-dark text-white">
                   <Link to="/shoes">Shop Now</Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
-                  <Link to="/collections">View Collections</Link>
+                  <Link to="/collections">New Arrivals</Link>
                 </Button>
               </div>
+            </div>
+            
+            <div className="hidden md:block relative">
+              <div className="relative z-10 transform rotate-[-15deg] hover:rotate-[-10deg] transition-transform duration-500">
+                <img 
+                  src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80"
+                  alt="Featured shoe" 
+                  className="w-[400px] drop-shadow-2xl"
+                />
+              </div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-brand/30 rounded-full blur-3xl"></div>
             </div>
           </div>
         </section>

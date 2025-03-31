@@ -12,7 +12,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { id, name, price, originalPrice, images, isNew, onSale } = product;
   
   return (
-    <Link to={`/product/${id}`} className="group">
+    <Link to={`/product/${id}`} className="group block h-full">
       <div className="overflow-hidden rounded-lg bg-gray-100 mb-3 aspect-square relative">
         <img 
           src={images[0]} 
