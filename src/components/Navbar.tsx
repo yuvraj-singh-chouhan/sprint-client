@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Menu, X, Search } from 'lucide-react';
+import { ShoppingCart, Menu, X, Search, User } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCart } from '@/hooks/use-cart';
@@ -40,7 +40,7 @@ const Navbar = () => {
             </Link>
           </nav>
 
-          {/* Search, Cart and Mobile Menu */}
+          {/* Search, Cart, Auth and Mobile Menu */}
           <div className="flex items-center space-x-4">
             <div className="hidden sm:flex items-center relative">
               <Input 
@@ -59,6 +59,20 @@ const Navbar = () => {
                 </span>
               )}
             </Link>
+            
+            {/* Auth Links - Desktop */}
+            <div className="hidden md:flex items-center space-x-2">
+              <Link to="/signin">
+                <Button variant="ghost" size="sm" className="text-neutral-700 hover:text-brand">
+                  Sign In
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button size="sm" className="bg-brand hover:bg-brand/90 text-white">
+                  Sign Up
+                </Button>
+              </Link>
+            </div>
             
             <Button 
               onClick={toggleMenu} 
@@ -110,6 +124,29 @@ const Navbar = () => {
               >
                 Collections
               </Link>
+              
+              {/* Auth Links - Mobile */}
+              <div className="flex flex-col space-y-2 pt-2">
+                <Link 
+                  to="/signin" 
+                  className="w-full"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Button variant="outline" className="w-full justify-start">
+                    <User className="mr-2 h-4 w-4" /> Sign In
+                  </Button>
+                </Link>
+                <Link 
+                  to="/signup" 
+                  className="w-full"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Button className="w-full justify-start bg-brand hover:bg-brand/90">
+                    <User className="mr-2 h-4 w-4" /> Sign Up
+                  </Button>
+                </Link>
+              </div>
+              
               <div className="pt-2">
                 <Input 
                   type="search"
