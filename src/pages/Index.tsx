@@ -18,45 +18,70 @@ const Index = () => {
       <Navbar />
       
       <main className="flex-grow">
-        {/* Updated Hero Section */}
-        <section className="relative h-[80vh] min-h-[600px] bg-gradient-to-r from-neutral-900 to-brand-dark overflow-hidden">
-          <div className="absolute inset-0 z-0 opacity-40 mix-blend-overlay">
-            <img 
-              src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80" 
-              alt="Hero background" 
-              className="w-full h-full object-cover object-center"
-            />
-          </div>
-          
-          <div className="container-custom h-full flex flex-col md:flex-row items-center justify-between relative z-10 gap-8">
-            <div className="max-w-xl animate-fade-in pt-16 md:pt-0">
-              <h1 className="text-white text-5xl md:text-6xl font-bold mb-4 leading-tight">
-                Find Your Perfect <span className="text-brand-light">Fit</span>
+        {/* Professional Hero Section */}
+        <section className="relative h-[90vh] bg-neutral-50 overflow-hidden">
+          <div className="container-custom h-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            {/* Left Column - Text Content */}
+            <div className="z-10 max-w-xl pt-16 lg:pt-0 order-2 lg:order-1 animate-fade-in">
+              <h5 className="text-brand font-medium tracking-wide mb-2">PREMIUM QUALITY</h5>
+              <h1 className="text-neutral-900 font-bold mb-6 leading-tight">
+                Discover Exceptional <br/><span className="text-brand">Footwear</span> Collection
               </h1>
-              <p className="text-neutral-200 text-xl mb-8">
-                Discover premium footwear for every occasion and elevate your style with our exclusive collections.
+              <p className="text-neutral-600 text-lg mb-8 max-w-md">
+                Elevate your style with our curated selection of premium shoes, handcrafted for comfort and designed for distinction.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button asChild size="lg" className="bg-brand hover:bg-brand-dark text-white">
-                  <Link to="/shoes">Shop Now</Link>
+                <Button asChild size="lg" className="bg-neutral-900 hover:bg-black text-white px-8">
+                  <Link to="/shoes">Explore Collection</Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
-                  <Link to="/collections">New Arrivals</Link>
+                <Button asChild variant="outline" size="lg" className="border-neutral-300 text-neutral-800 hover:bg-neutral-100 px-8">
+                  <Link to="/collections">New Season</Link>
                 </Button>
+              </div>
+              
+              {/* Featured Stats */}
+              <div className="grid grid-cols-3 gap-4 mt-12 border-t border-neutral-200 pt-8">
+                <div>
+                  <p className="text-3xl font-bold text-neutral-900">350+</p>
+                  <p className="text-neutral-600 text-sm">Premium Models</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold text-neutral-900">15k+</p>
+                  <p className="text-neutral-600 text-sm">Happy Customers</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold text-neutral-900">25+</p>
+                  <p className="text-neutral-600 text-sm">Brand Partners</p>
+                </div>
               </div>
             </div>
             
-            <div className="hidden md:block relative">
-              <div className="relative z-10 transform rotate-[-15deg] hover:rotate-[-10deg] transition-transform duration-500">
+            {/* Right Column - Image */}
+            <div className="relative order-1 lg:order-2">
+              <div className="relative z-10 mx-auto max-w-md lg:max-w-full">
                 <img 
-                  src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80"
-                  alt="Featured shoe" 
-                  className="w-[400px] drop-shadow-2xl"
+                  src="https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1925&q=80"
+                  alt="Premium footwear" 
+                  className="w-full h-auto object-cover shadow-2xl rounded-lg"
                 />
               </div>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-brand/30 rounded-full blur-3xl"></div>
+              
+              {/* Decorative elements */}
+              <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-brand/10 rounded-full -z-10 blur-3xl"></div>
+              <div className="absolute bottom-1/3 left-1/3 w-40 h-40 bg-brand/20 rounded-full -z-10 blur-2xl"></div>
+              
+              {/* Featured product label */}
+              <div className="absolute bottom-8 right-8 z-20 bg-white px-6 py-4 rounded-lg shadow-lg hidden lg:block">
+                <p className="text-neutral-500 text-sm">Featured Product</p>
+                <p className="font-medium text-neutral-900">Premium Leather Oxford</p>
+                <p className="text-brand font-bold">$189.99</p>
+              </div>
             </div>
           </div>
+          
+          {/* Background decorative elements */}
+          <div className="absolute top-0 right-0 w-1/3 h-full bg-neutral-100 -z-20"></div>
+          <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-neutral-50 to-transparent -z-10"></div>
         </section>
         
         {/* Featured Categories */}
