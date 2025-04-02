@@ -1,11 +1,12 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from "@/components/ui/badge";
 import { Shoe } from '@/data/shoes';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Heart } from 'lucide-react';
 import { useCart } from '@/hooks/use-cart';
+import { useWishlist } from '@/hooks/use-wishlist';
 import { toast } from "@/components/ui/use-toast";
 
 interface ProductCardProps {
@@ -15,6 +16,8 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { id, name, price, originalPrice, images, isNew, onSale, sizes } = product;
   const { addItem } = useCart();
+  const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlist();
+  const inWishlist = isInWishlist(id);
   
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -34,6 +37,17 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       title: "Added to cart",
       description: `${name} (Size ${sizes[0]}) added to your cart.`,
     });
+  };
+  
+  const handleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (inWishlist) {
+      removeFromWishlist(id, name);
+    } else {
+      addToWishlist(id, name);
+    }
   };
   
   return (
@@ -59,6 +73,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               Sale
             </Badge>
           )}
+        </div>
+
+        {/* Wishlist button */}
+        <div className="absolute top-2 right-2">
+          <button 
+            onClick={handleWishlist} 
+            className={`rounded-full p-2 ${inWishlist ? 'bg-red-50 text-red-500' : 'bg-white/80 text-gray-600 hover:text-red-500'} transition-colors duration-200`}
+          >
+            <Heart className={`h-5 w-5 ${inWishlist ? 'fill-red-500' : ''}`} />
+          </button>
         </div>
       </Link>
       
