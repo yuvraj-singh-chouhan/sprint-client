@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Trash2, Plus, Minus } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -7,14 +7,33 @@ import { Separator } from "@/components/ui/separator";
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useCart } from '@/hooks/use-cart';
+import { useAuth } from '@/hooks/use-auth';
 import { Input } from '@/components/ui/input';
+import AuthModal from '@/components/AuthModal';
 
 const CartPage = () => {
   const navigate = useNavigate();
   const { items, removeItem, updateQuantity, clearCart, totalPrice } = useCart();
+  const { isAuthenticated } = useAuth();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authType, setAuthType] = useState<'signin' | 'signup'>('signin');
   
   const handleCheckout = () => {
-    navigate('/checkout');
+    if (isAuthenticated) {
+      navigate('/checkout');
+    } else {
+      // Show login modal if not authenticated
+      setAuthType('signin');
+      setIsAuthModalOpen(true);
+    }
+  };
+  
+  const closeAuthModal = () => {
+    setIsAuthModalOpen(false);
+  };
+  
+  const switchAuthType = (type: 'signin' | 'signup') => {
+    setAuthType(type);
   };
   
   return (
@@ -177,7 +196,7 @@ const CartPage = () => {
                     size="lg"
                     disabled={items.length === 0}
                   >
-                    Proceed to Checkout
+                    {isAuthenticated ? 'Proceed to Checkout' : 'Sign In to Checkout'}
                   </Button>
                 </div>
               </div>
@@ -187,6 +206,14 @@ const CartPage = () => {
       </main>
       
       <Footer />
+      
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={isAuthModalOpen}
+        onClose={closeAuthModal}
+        authType={authType}
+        onSwitchAuthType={switchAuthType}
+      />
     </div>
   );
 };

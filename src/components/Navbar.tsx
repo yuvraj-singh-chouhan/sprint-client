@@ -1,11 +1,12 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Menu, X, Search, User, Heart, LogIn, UserPlus } from 'lucide-react';
+import { ShoppingCart, Menu, X, Search, User, Heart, LogIn, UserPlus, LogOut } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCart } from '@/hooks/use-cart';
 import { useWishlist } from '@/hooks/use-wishlist';
+import { useAuth } from '@/hooks/use-auth';
 import AuthModal from '@/components/AuthModal';
 
 const Navbar = () => {
@@ -14,6 +15,7 @@ const Navbar = () => {
   const [authType, setAuthType] = useState<'signin' | 'signup'>('signin');
   const { itemCount } = useCart();
   const { itemCount: wishlistCount } = useWishlist();
+  const { isAuthenticated, logout } = useAuth();
   
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   
@@ -33,6 +35,11 @@ const Navbar = () => {
   
   const switchAuthType = (type: 'signin' | 'signup') => {
     setAuthType(type);
+  };
+
+  const handleLogout = () => {
+    logout();
+    setIsMenuOpen(false);
   };
 
   return (
@@ -95,23 +102,37 @@ const Navbar = () => {
               
               {/* Auth Links - Desktop */}
               <div className="hidden md:flex items-center space-x-2">
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="text-neutral-700 hover:text-brand"
-                  onClick={openSignInModal}
-                >
-                  <LogIn className="mr-2 h-4 w-4" />
-                  Sign In
-                </Button>
-                <Button 
-                  size="sm" 
-                  className="bg-brand hover:bg-brand/90 text-white"
-                  onClick={openSignUpModal}
-                >
-                  <UserPlus className="mr-2 h-4 w-4" />
-                  Sign Up
-                </Button>
+                {isAuthenticated ? (
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-neutral-700 hover:text-brand"
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign Out
+                  </Button>
+                ) : (
+                  <>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-neutral-700 hover:text-brand"
+                      onClick={openSignInModal}
+                    >
+                      <LogIn className="mr-2 h-4 w-4" />
+                      Sign In
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      className="bg-brand hover:bg-brand/90 text-white"
+                      onClick={openSignUpModal}
+                    >
+                      <UserPlus className="mr-2 h-4 w-4" />
+                      Sign Up
+                    </Button>
+                  </>
+                )}
               </div>
               
               <Button 
@@ -181,25 +202,37 @@ const Navbar = () => {
                 
                 {/* Auth Links - Mobile */}
                 <div className="flex flex-col space-y-2 pt-2">
-                  <Button 
-                    variant="outline" 
-                    className="w-full justify-start"
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                      openSignInModal();
-                    }}
-                  >
-                    <LogIn className="mr-2 h-4 w-4" /> Sign In
-                  </Button>
-                  <Button 
-                    className="w-full justify-start bg-brand hover:bg-brand/90"
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                      openSignUpModal();
-                    }}
-                  >
-                    <UserPlus className="mr-2 h-4 w-4" /> Sign Up
-                  </Button>
+                  {isAuthenticated ? (
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={handleLogout}
+                    >
+                      <LogOut className="mr-2 h-4 w-4" /> Sign Out
+                    </Button>
+                  ) : (
+                    <>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={() => {
+                          setIsMenuOpen(false);
+                          openSignInModal();
+                        }}
+                      >
+                        <LogIn className="mr-2 h-4 w-4" /> Sign In
+                      </Button>
+                      <Button 
+                        className="w-full justify-start bg-brand hover:bg-brand/90"
+                        onClick={() => {
+                          setIsMenuOpen(false);
+                          openSignUpModal();
+                        }}
+                      >
+                        <UserPlus className="mr-2 h-4 w-4" /> Sign Up
+                      </Button>
+                    </>
+                  )}
                 </div>
                 
                 <div className="pt-2">

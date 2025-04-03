@@ -1,10 +1,10 @@
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCart } from '@/hooks/use-cart';
+import { useAuth } from '@/hooks/use-auth';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -62,6 +62,7 @@ type FormValues = z.infer<typeof formSchema>;
 const CheckoutPage = () => {
   const navigate = useNavigate();
   const { items, totalPrice, clearCart } = useCart();
+  const { isAuthenticated } = useAuth();
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -83,11 +84,9 @@ const CheckoutPage = () => {
   });
 
   const handleSubmit = (data: FormValues) => {
-    // In a real application, we would process payment and save order here
     console.log('Order data:', data);
     console.log('Cart items:', items);
     
-    // Create an order object to pass to the success page
     const order = {
       id: `ORD-${Date.now()}`,
       date: new Date().toISOString(),
@@ -102,19 +101,15 @@ const CheckoutPage = () => {
       }
     };
     
-    // Save order to localStorage (in a real app, this would go to a database)
     localStorage.setItem('lastOrder', JSON.stringify(order));
     
-    // Show success toast
     toast({
       title: "Order placed successfully!",
       description: `Your order #${order.id} has been confirmed.`,
     });
     
-    // Clear the cart
     clearCart();
     
-    // Navigate to success page
     navigate('/order-success');
   };
 
@@ -124,12 +119,13 @@ const CheckoutPage = () => {
     return (totalPrice + shippingCost + tax).toFixed(2);
   };
 
-  // Redirect to cart if cart is empty
-  React.useEffect(() => {
-    if (items.length === 0) {
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/cart');
+    } else if (items.length === 0) {
       navigate('/cart');
     }
-  }, [items, navigate]);
+  }, [items, navigate, isAuthenticated]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -140,11 +136,9 @@ const CheckoutPage = () => {
           <h1 className="text-3xl font-bold mb-8">Checkout</h1>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Checkout Form */}
             <div className="lg:col-span-2">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
-                  {/* Shipping Information */}
                   <div className="bg-white rounded-lg border border-neutral-200 p-6">
                     <h2 className="text-xl font-semibold mb-4">Shipping Information</h2>
                     
@@ -279,7 +273,6 @@ const CheckoutPage = () => {
                     </div>
                   </div>
                   
-                  {/* Payment Information */}
                   <div className="bg-white rounded-lg border border-neutral-200 p-6">
                     <h2 className="text-xl font-semibold mb-4 flex items-center">
                       <CreditCard className="mr-2 h-5 w-5" />
@@ -410,7 +403,6 @@ const CheckoutPage = () => {
               </Form>
             </div>
             
-            {/* Order Summary */}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-lg border border-neutral-200 p-6 sticky top-20">
                 <h2 className="text-xl font-bold mb-4">Order Summary</h2>

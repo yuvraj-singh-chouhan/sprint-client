@@ -1,25 +1,23 @@
-
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { LogIn, ChevronLeft } from 'lucide-react';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { 
+import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/components/ui/button';
+import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { toast } from "@/components/ui/use-toast";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { useAuth } from '@/hooks/use-auth';
 
 const formSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address" }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters" }),
+  email: z.string().email({ message: 'Please enter a valid email address' }),
+  password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
 });
 
 interface SignInProps {
@@ -27,44 +25,36 @@ interface SignInProps {
   onSwitchAuthType?: () => void;
 }
 
-const SignIn: React.FC<SignInProps> = ({ isModal, onSwitchAuthType }) => {
+const SignIn: React.FC<SignInProps> = ({ isModal = false, onSwitchAuthType }) => {
   const navigate = useNavigate();
-
+  const { login } = useAuth();
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // In a real app, this would call an authentication API
-    console.log("Login attempt:", values);
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
+    login(data.email, data.password);
     
-    // For demo purposes, we'll simulate a successful login
-    setTimeout(() => {
-      toast({
-        title: "Login successful",
-        description: "Welcome back to SoleVenture!",
-      });
-      if (!isModal) {
-        navigate('/');
-      }
-    }, 1000);
-  }
+    if (isModal) {
+      // If we're in a modal, just close it (handled by parent)
+    } else {
+      // Otherwise navigate to home
+      navigate('/');
+    }
+  };
 
-  // The form content to be used in both the page and modal
-  const formContent = (
-    <div className="space-y-6">
-      <div className="space-y-2 text-center">
-        <div className="flex justify-center mb-4">
-          <div className="w-16 h-16 bg-brand/10 rounded-full flex items-center justify-center">
-            <LogIn className="h-8 w-8 text-brand" />
-          </div>
-        </div>
-        <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
-        <p className="text-muted-foreground">Enter your credentials to access exclusive SoleVenture offers</p>
+  return (
+    <div className={isModal ? '' : 'container-custom py-12 max-w-md'}>
+      <div className="text-center mb-8">
+        <h1 className="text-2xl font-bold mb-2">Welcome Back</h1>
+        <p className="text-neutral-600">
+          Sign in to your account to continue shopping
+        </p>
       </div>
       
       <Form {...form}>
@@ -76,7 +66,11 @@ const SignIn: React.FC<SignInProps> = ({ isModal, onSwitchAuthType }) => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="your.email@example.com" {...field} />
+                  <Input
+                    placeholder="your.email@example.com"
+                    type="email"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -90,90 +84,39 @@ const SignIn: React.FC<SignInProps> = ({ isModal, onSwitchAuthType }) => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="••••••••" {...field} />
+                  <Input
+                    placeholder="••••••••"
+                    type="password"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-
-          <div className="flex justify-end">
-            <Link to="#" className="text-sm text-brand hover:underline">
-              Forgot password?
-            </Link>
-          </div>
           
-          <Button type="submit" className="w-full bg-brand hover:bg-brand/90" disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting ? (
-              "Signing in..."
-            ) : (
-              <>
-                <LogIn className="mr-2 h-4 w-4" /> Sign In
-              </>
-            )}
+          <Button type="submit" className="w-full bg-brand hover:bg-brand/90">
+            Sign In
           </Button>
         </form>
       </Form>
       
-      <div className="relative my-6">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-gray-200" />
-        </div>
-        <div className="relative flex justify-center">
-          <span className="bg-white px-4 text-sm text-gray-500">New to SoleVenture?</span>
-        </div>
-      </div>
-
-      <div className="text-center">
-        {isModal ? (
-          <Button 
-            variant="outline" 
-            className="w-full" 
-            onClick={onSwitchAuthType}
-          >
-            Create Account
-          </Button>
-        ) : (
-          <Link to="/signup" className="w-full inline-block">
-            <Button variant="outline" className="w-full">
-              Create Account
-            </Button>
-          </Link>
-        )}
-      </div>
-    </div>
-  );
-
-  // If used as a page (not modal)
-  if (!isModal) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100">
-        <div className="container max-w-md mx-auto py-16 px-4">
-          <div className="mb-8">
-            <Link to="/" className="inline-flex items-center text-brand hover:text-brand/80 transition">
-              <ChevronLeft className="h-4 w-4 mr-1" />
-              Back to home
-            </Link>
-          </div>
-          
-          <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
-            {formContent}
-          </div>
-          
-          <div className="mt-8 text-center text-sm text-gray-500">
-            <p>By signing in, you agree to SoleVenture's Terms of Service & Privacy Policy</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-  
-  // If used as a modal
-  return (
-    <div>
-      {formContent}
-      <div className="mt-6 text-center text-sm text-gray-500">
-        <p>By signing in, you agree to SoleVenture's Terms of Service & Privacy Policy</p>
+      <div className="mt-6 text-center">
+        <p className="text-neutral-600">
+          Don't have an account?{' '}
+          {isModal ? (
+            <button
+              onClick={onSwitchAuthType}
+              className="text-brand hover:underline font-medium"
+            >
+              Sign up
+            </button>
+          ) : (
+            <a href="/signup" className="text-brand hover:underline font-medium">
+              Sign up
+            </a>
+          )}
+        </p>
       </div>
     </div>
   );
