@@ -13,6 +13,10 @@ const CartPage = () => {
   const navigate = useNavigate();
   const { items, removeItem, updateQuantity, clearCart, totalPrice } = useCart();
   
+  const handleCheckout = () => {
+    navigate('/checkout');
+  };
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -168,9 +172,10 @@ const CartPage = () => {
                   </div>
                   
                   <Button
-                    onClick={() => navigate('/checkout')}
+                    onClick={handleCheckout}
                     className="w-full bg-brand hover:bg-brand-dark text-white"
                     size="lg"
+                    disabled={items.length === 0}
                   >
                     Proceed to Checkout
                   </Button>
