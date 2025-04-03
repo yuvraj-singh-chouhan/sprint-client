@@ -1,7 +1,7 @@
 
 import React, { useMemo } from 'react';
 import { useWishlist } from '@/hooks/use-wishlist';
-import { getShoesData } from '@/data/shoes'; 
+import { shoes } from '@/data/shoes'; 
 import ProductCard from '@/components/ProductCard';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -11,7 +11,7 @@ import { Separator } from "@/components/ui/separator";
 const WishlistPage: React.FC = () => {
   const { items: wishlistItems, clearWishlist } = useWishlist();
   
-  const allShoes = getShoesData();
+  const allShoes = shoes;
   const wishlistProducts = useMemo(() => {
     return allShoes.filter(shoe => wishlistItems.includes(shoe.id));
   }, [allShoes, wishlistItems]);
