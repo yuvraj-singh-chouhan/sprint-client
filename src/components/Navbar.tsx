@@ -11,31 +11,11 @@ import { useAuth } from '@/hooks/use-auth';
 const Navbar = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authType, setAuthType] = useState<'signin' | 'signup'>('signin');
   const { itemCount } = useCart();
   const { itemCount: wishlistCount } = useWishlist();
   const { isAuthenticated, logout } = useAuth();
   
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  
-  const openSignInModal = () => {
-    setAuthType('signin');
-    setIsAuthModalOpen(true);
-  };
-  
-  const openSignUpModal = () => {
-    setAuthType('signup');
-    setIsAuthModalOpen(true);
-  };
-  
-  const closeAuthModal = () => {
-    setIsAuthModalOpen(false);
-  };
-  
-  const switchAuthType = (type: 'signin' | 'signup') => {
-    setAuthType(type);
-  };
 
   const handleLogout = () => {
     logout();
@@ -248,13 +228,7 @@ const Navbar = () => {
         </div>
       </header>
       
-      {/* Auth Modal */}
-      <AuthModal 
-        isOpen={isAuthModalOpen}
-        onClose={closeAuthModal}
-        authType={authType}
-        onSwitchAuthType={switchAuthType}
-      />
+      {/* Auth Modal removed - now using page-based auth */}
     </>
   );
 };
