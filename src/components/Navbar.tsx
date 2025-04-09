@@ -1,15 +1,15 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Menu, X, Search, User, Heart, LogIn, UserPlus, LogOut } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCart } from '@/hooks/use-cart';
 import { useWishlist } from '@/hooks/use-wishlist';
 import { useAuth } from '@/hooks/use-auth';
-import AuthModal from '@/components/AuthModal';
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authType, setAuthType] = useState<'signin' | 'signup'>('signin');
@@ -118,7 +118,7 @@ const Navbar = () => {
                       variant="ghost" 
                       size="sm" 
                       className="text-neutral-700 hover:text-brand"
-                      onClick={openSignInModal}
+                      onClick={() => navigate('/signin')}
                     >
                       <LogIn className="mr-2 h-4 w-4" />
                       Sign In
@@ -126,7 +126,7 @@ const Navbar = () => {
                     <Button 
                       size="sm" 
                       className="bg-brand hover:bg-brand/90 text-white"
-                      onClick={openSignUpModal}
+                      onClick={() => navigate('/signup')}
                     >
                       <UserPlus className="mr-2 h-4 w-4" />
                       Sign Up
@@ -217,7 +217,7 @@ const Navbar = () => {
                         className="w-full justify-start"
                         onClick={() => {
                           setIsMenuOpen(false);
-                          openSignInModal();
+                          navigate('/signin');
                         }}
                       >
                         <LogIn className="mr-2 h-4 w-4" /> Sign In
@@ -226,7 +226,7 @@ const Navbar = () => {
                         className="w-full justify-start bg-brand hover:bg-brand/90"
                         onClick={() => {
                           setIsMenuOpen(false);
-                          openSignUpModal();
+                          navigate('/signup');
                         }}
                       >
                         <UserPlus className="mr-2 h-4 w-4" /> Sign Up

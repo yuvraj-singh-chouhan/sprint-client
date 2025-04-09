@@ -9,32 +9,22 @@ import Footer from '@/components/Footer';
 import { useCart } from '@/hooks/use-cart';
 import { useAuth } from '@/hooks/use-auth';
 import { Input } from '@/components/ui/input';
-import AuthModal from '@/components/AuthModal';
 
 const CartPage = () => {
   const navigate = useNavigate();
   const { items, removeItem, updateQuantity, clearCart, totalPrice } = useCart();
   const { isAuthenticated } = useAuth();
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authType, setAuthType] = useState<'signin' | 'signup'>('signin');
   
   const handleCheckout = () => {
     if (isAuthenticated) {
       navigate('/checkout');
     } else {
-      // Show login modal if not authenticated
-      setAuthType('signin');
-      setIsAuthModalOpen(true);
+      // Redirect to login page if not authenticated
+      navigate('/signin');
     }
   };
   
-  const closeAuthModal = () => {
-    setIsAuthModalOpen(false);
-  };
-  
-  const switchAuthType = (type: 'signin' | 'signup') => {
-    setAuthType(type);
-  };
+  // Removed unused auth modal functions
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -206,14 +196,6 @@ const CartPage = () => {
       </main>
       
       <Footer />
-      
-      {/* Auth Modal */}
-      <AuthModal 
-        isOpen={isAuthModalOpen}
-        onClose={closeAuthModal}
-        authType={authType}
-        onSwitchAuthType={switchAuthType}
-      />
     </div>
   );
 };
