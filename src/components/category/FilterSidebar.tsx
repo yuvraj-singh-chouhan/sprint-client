@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import PriceRangeFilter, { PriceRange } from './PriceRangeFilter';
 import ColorFilter from './ColorFilter';
 
@@ -23,31 +24,21 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   toggleColor,
   resetFilters,
 }) => {
-  const showResetButton = priceRange.length > 0 || selectedColors.length > 0;
-  
   return (
-    <div className="hidden lg:block">
-      <div className="bg-white rounded-lg border border-neutral-200 p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-lg font-bold">Filters</h2>
-          {showResetButton && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={resetFilters}
-              className="text-neutral-600 hover:text-brand"
-            >
-              Reset
-            </Button>
-          )}
-        </div>
-
+    <div className="space-y-6">
+      {/* Price Range Filter */}
+      <div>
         <PriceRangeFilter
           priceRanges={priceRanges}
           selectedPriceRanges={priceRange}
           togglePriceRange={togglePriceRange}
         />
+      </div>
 
+      <Separator className="bg-neutral-200" />
+
+      {/* Color Filter */}
+      <div>
         <ColorFilter
           colors={allColors}
           selectedColors={selectedColors}

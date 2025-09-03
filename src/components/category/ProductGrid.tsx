@@ -1,7 +1,9 @@
 
 import React from 'react';
-import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
+import { Tag } from 'lucide-react';
+import ProductCard from '@/components/ProductCard';
+import { EmptyState } from '@/components/common';
 import { Shoe } from '@/data/shoes';
 
 interface ProductGridProps {
@@ -12,20 +14,36 @@ interface ProductGridProps {
 const ProductGrid: React.FC<ProductGridProps> = ({ products, resetFilters }) => {
   if (products.length === 0) {
     return (
-      <div className="text-center py-16 bg-neutral-50 rounded-lg">
-        <h2 className="text-xl font-medium mb-2">No products found</h2>
-        <p className="text-neutral-600 mb-6">
-          Try adjusting your filters to find what you're looking for.
-        </p>
-        <Button onClick={resetFilters}>Reset Filters</Button>
-      </div>
+      <EmptyState
+        icon={Tag}
+        title="No products found"
+        description="Try adjusting your filters or search criteria to find what you're looking for."
+        actions={[
+          {
+            label: 'Reset Filters',
+            onClick: resetFilters,
+            variant: 'default'
+          },
+          {
+            label: 'View All Products',
+            onClick: () => window.location.href = '/shoes',
+            variant: 'outline'
+          }
+        ]}
+      />
     );
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+      {products.map((product, index) => (
+        <div 
+          key={product.id} 
+          className="reveal-animation" 
+          style={{animationDelay: `${index * 0.05}s`}}
+        >
+          <ProductCard product={product} />
+        </div>
       ))}
     </div>
   );
